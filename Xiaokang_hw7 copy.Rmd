@@ -130,7 +130,32 @@ hist(mu1s)
 hist(mu2s)
 hist(sigma1s)
 hist(sigma2s)
+```
 
+Or we can directly use the function \emph{arms} to sample five parameters simultaneously, since the underlying method used for multivariate sampling in \emph{arms} is Gibbs sampling.
+```{r}
+f <- function(xa) log(mylike(xa[1],xa[2],xa[3],xa[4],xa[5],x))
+init <- c(0.5,5.7,9,0.2,0.2)
+res <- arms(init,f,function(xa) (xa[1]>0)*(xa[1]<1)*(xa[2]>-50)*(xa[2]<100)*(xa[3]>-50)*(xa[3]<100)*(xa[4]>0)*(xa[4]<5)*(xa[5]>0)*(xa[5]<5),3000)
+
+res <- res[-c(1:1000),]
+delta3 <- res[,1]
+mu1s <- res[,2]
+mu2s <- res[,3]
+sigma1s <- res[,4]
+sigma2s <- res[,5]
+
+plot(ts(delta3))
+plot(ts(mu1s))
+plot(ts(mu2s))
+plot(ts(sigma1s))
+plot(ts(sigma2s))
+
+hist(delta3)
+hist(mu1s)
+hist(mu2s)
+hist(sigma1s)
+hist(sigma2s)
 ```
 
 
